@@ -19,13 +19,14 @@
             background: #000;
         }
 
+        /* Видео фон */
         .video-background {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 0;
             overflow: hidden;
         }
 
@@ -33,12 +34,10 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
             filter: brightness(0.7);
         }
 
+        /* Цветной overlay */
         .overlay {
             position: absolute;
             top: 0;
@@ -46,9 +45,13 @@
             width: 100%;
             height: 100%;
             background: linear-gradient(45deg, rgba(180, 58, 117, 0.3) 0%, rgba(253, 29, 29, 0.2) 50%, rgba(252, 176, 69, 0.2) 100%);
+            z-index: 1;
         }
 
+        /* Контейнер с контентом */
         .container {
+            position: relative;
+            z-index: 2;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -68,7 +71,6 @@
             box-shadow: 0 0 25px rgba(255, 77, 148, 0.6);
             transition: transform 0.5s ease, box-shadow 0.5s ease;
             background: #000;
-            z-index: 2;
         }
 
         .avatar img {
@@ -156,13 +158,15 @@
     </style>
 </head>
 <body>
+    <!-- Видео фон -->
     <div class="video-background">
-        <div class="overlay"></div>
-        <video autoplay muted loop playsinline id="bgVideo">
+        <video autoplay muted loop playsinline>
             <source src="assets/background.mp4" type="video/mp4">
         </video>
+        <div class="overlay"></div>
     </div>
 
+    <!-- Контент -->
     <div class="container">
         <div class="avatar">
             <img src="https://t.me/i/userpic/160/ksellik.jpg" alt="KS Avatar">
@@ -183,6 +187,7 @@
         </div>
     </div>
 
+    <!-- Тайпрайтер JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const textElement = document.getElementById('typewriter');
@@ -217,21 +222,14 @@
                         setTimeout(type, 500);
                     }
                     
-                    // Обновляем текст с сохранением переносов строк
-                    textElement.innerHTML = currentText + (deleting ? '' : '<span class="cursor"></span>');
-                    
-                    // Добавляем предыдущие строки
-                    if (lineIndex > 0) {
-                        let fullText = "";
-                        for (let i = 0; i < lineIndex; i++) {
-                            fullText += lines[i] + "<br>";
-                        }
-                        textElement.innerHTML = fullText + currentText + (deleting ? '' : '<span class="cursor"></span>');
+                    let fullText = "";
+                    for (let i = 0; i < lineIndex; i++) {
+                        fullText += lines[i] + "<br>";
                     }
+                    textElement.innerHTML = fullText + currentText + (deleting ? '' : '<span class="cursor"></span>');
                 }
             }
             
-            // Запускаем анимацию
             setTimeout(type, 1000);
         });
     </script>
