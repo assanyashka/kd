@@ -19,7 +19,6 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
-        /* Прелоадер */
         #preloader {
             position: fixed;
             top: 0;
@@ -41,7 +40,7 @@
             height: 6px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            margin-top: 20px;
+            margin-top: 40px;
             overflow: hidden;
             position: relative;
         }
@@ -56,11 +55,12 @@
         }
 
         .motorcycle-loader {
-            font-size: 40px;
-            color: #ff4d94;
             position: absolute;
+            top: -25px;
             left: 0%;
-            transform: translateX(-100%);
+            font-size: 30px;
+            color: #ff4d94;
+            transform: translateX(-50%);
             transition: left 0.3s ease;
         }
 
@@ -71,7 +71,6 @@
             opacity: 0.8;
         }
 
-        /* Видео фон */
         .video-background {
             position: fixed;
             top: 0;
@@ -91,7 +90,6 @@
             filter: brightness(0.7);
         }
 
-        /* Цветной overlay */
         .overlay {
             position: absolute;
             top: 0;
@@ -102,7 +100,6 @@
             z-index: 1;
         }
 
-        /* Контейнер с контентом */
         .container {
             position: relative;
             z-index: 2;
@@ -152,7 +149,6 @@
             max-width: 400px;
             width: 90%;
             border: 1px solid #333;
-            backdrop-filter: blur(5px);
             margin-bottom: 15px;
         }
 
@@ -224,7 +220,6 @@
             transform: translateY(-4px);
         }
 
-        /* Медиа-запросы для адаптивности */
         @media (min-width: 768px) {
             .avatar {
                 width: 150px;
@@ -285,16 +280,14 @@
     </style>
 </head>
 <body>
-    <!-- Прелоадер -->
     <div id="preloader">
-        <div class="motorcycle-loader">🏍️</div>
         <div class="loading-bar">
             <div class="loading-progress"></div>
+            <div class="motorcycle-loader">🏍️</div>
         </div>
         <div class="loading-text">Загрузка...</div>
     </div>
 
-    <!-- Видео фон -->
     <div class="video-background">
         <video autoplay muted loop playsinline>
             <source src="assets/background.mp4" type="video/mp4">
@@ -302,7 +295,6 @@
         <div class="overlay"></div>
     </div>
 
-    <!-- Контент -->
     <div class="container">
         <div class="avatar">
             <img src="https://t.me/i/userpic/160/ksellik.jpg" alt="KS Avatar">
@@ -332,11 +324,9 @@
             const loadingProgress = document.querySelector('.loading-progress');
             const textElement = document.getElementById('typewriter');
             
-            // Текст для анимации печати
             const text = "little about me:\nks\n16\nmotorcycles and tiktok";
             const lines = text.split('\n');
             
-            // Симуляция загрузки
             let progress = 0;
             const loadingInterval = setInterval(() => {
                 progress += Math.random() * 10;
@@ -344,31 +334,25 @@
                     progress = 100;
                     clearInterval(loadingInterval);
                     
-                    // Загрузка завершена
                     setTimeout(() => {
-                        // Показываем фон и контент
                         videoBackground.style.opacity = "1";
                         container.style.opacity = "1";
                         container.style.transform = "translateY(0)";
                         
-                        // Скрываем прелоадер
                         setTimeout(() => {
                             preloader.style.opacity = "0";
                             setTimeout(() => {
                                 preloader.style.display = "none";
-                                // Запускаем анимацию печати после загрузки
                                 startTypewriter();
                             }, 800);
                         }, 500);
                     }, 300);
                 }
                 
-                // Обновляем индикатор загрузки
                 loadingProgress.style.width = progress + '%';
                 motorcycleLoader.style.left = progress + '%';
             }, 200);
             
-            // Функция анимации печати
             function startTypewriter() {
                 let lineIndex = 0;
                 let currentLine = '';
@@ -377,18 +361,20 @@
                     if (lineIndex < lines.length) {
                         const line = lines[lineIndex];
                         let charIndex = 0;
+                        currentLine = '';
                         
                         function typeChar() {
                             if (charIndex < line.length) {
                                 currentLine += line.charAt(charIndex);
                                 updateText();
                                 charIndex++;
-                                setTimeout(typeChar, 100);
+                                setTimeout(typeChar, 150);
                             } else {
-                                // Переходим к следующей строке
-                                currentLine += '<br>';
-                                updateText();
                                 lineIndex++;
+                                if (lineIndex < lines.length) {
+                                    currentLine += '<br>';
+                                }
+                                updateText();
                                 setTimeout(typeLine, 500);
                             }
                         }
@@ -400,12 +386,15 @@
                 function updateText() {
                     let fullText = '';
                     for (let i = 0; i < lineIndex; i++) {
-                        fullText += lines[i] + '<br>';
+                        if (i > 0) fullText += '<br>';
+                        fullText += lines[i];
                     }
-                    textElement.innerHTML = fullText + currentLine + '<span class="cursor"></span>';
+                    if (lineIndex < lines.length) {
+                        fullText += (lineIndex > 0 ? '<br>' : '') + currentLine;
+                    }
+                    textElement.innerHTML = fullText + '<span class="cursor"></span>';
                 }
                 
-                // Начинаем анимацию
                 setTimeout(typeLine, 500);
             }
         });
