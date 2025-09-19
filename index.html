@@ -34,19 +34,23 @@
             transition: opacity 0.8s ease-out;
         }
 
-        .loading-bar {
+        .loading-bar-container {
             width: 80%;
             max-width: 300px;
+            position: relative;
+            margin-top: 40px;
+        }
+
+        .loading-bar {
+            width: 100%;
             height: 6px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            margin-top: 40px;
             overflow: hidden;
             position: relative;
         }
 
         .loading-progress {
-            position: absolute;
             height: 100%;
             width: 0%;
             background: linear-gradient(90deg, #ff4d94, #ff8cb4);
@@ -56,7 +60,7 @@
 
         .motorcycle-loader {
             position: absolute;
-            top: -25px;
+            top: -30px;
             left: 0%;
             font-size: 30px;
             color: #ff4d94;
@@ -161,18 +165,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-        }
-
-        .typewriter-line {
-            overflow: hidden;
-            white-space: nowrap;
-            margin: 5px 0;
-            opacity: 0;
-            animation: fadeIn 0.5s forwards;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
+            font-family: Consolas, monospace;
         }
 
         .cursor {
@@ -281,9 +274,11 @@
 </head>
 <body>
     <div id="preloader">
-        <div class="loading-bar">
-            <div class="loading-progress"></div>
+        <div class="loading-bar-container">
             <div class="motorcycle-loader">🏍️</div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
         </div>
         <div class="loading-text">Загрузка...</div>
     </div>
@@ -325,7 +320,6 @@
             const textElement = document.getElementById('typewriter');
             
             const text = "little about me:\nks\n16\nmotorcycles and tiktok";
-            const lines = text.split('\n');
             
             let progress = 0;
             const loadingInterval = setInterval(() => {
@@ -354,48 +348,29 @@
             }, 200);
             
             function startTypewriter() {
-                let lineIndex = 0;
-                let currentLine = '';
+                let index = 0;
+                const speed = 100;
+                const lines = text.split('\n');
+                let currentLine = 0;
+                let currentText = '';
                 
-                function typeLine() {
-                    if (lineIndex < lines.length) {
-                        const line = lines[lineIndex];
-                        let charIndex = 0;
-                        currentLine = '';
-                        
-                        function typeChar() {
-                            if (charIndex < line.length) {
-                                currentLine += line.charAt(charIndex);
-                                updateText();
-                                charIndex++;
-                                setTimeout(typeChar, 150);
-                            } else {
-                                lineIndex++;
-                                if (lineIndex < lines.length) {
-                                    currentLine += '<br>';
-                                }
-                                updateText();
-                                setTimeout(typeLine, 500);
-                            }
+                function type() {
+                    if (currentLine < lines.length) {
+                        if (index < lines[currentLine].length) {
+                            currentText += lines[currentLine].charAt(index);
+                            textElement.innerHTML = currentText + '<span class="cursor"></span>';
+                            index++;
+                            setTimeout(type, speed);
+                        } else {
+                            currentText += '<br>';
+                            index = 0;
+                            currentLine++;
+                            setTimeout(type, speed * 2);
                         }
-                        
-                        typeChar();
                     }
                 }
                 
-                function updateText() {
-                    let fullText = '';
-                    for (let i = 0; i < lineIndex; i++) {
-                        if (i > 0) fullText += '<br>';
-                        fullText += lines[i];
-                    }
-                    if (lineIndex < lines.length) {
-                        fullText += (lineIndex > 0 ? '<br>' : '') + currentLine;
-                    }
-                    textElement.innerHTML = fullText + '<span class="cursor"></span>';
-                }
-                
-                setTimeout(typeLine, 500);
+                type();
             }
         });
     </script>
