@@ -10,13 +10,65 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', monospace;
         }
 
         body, html {
             height: 100%;
             overflow: hidden;
             background: #000;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Прелоадер */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .loading-bar {
+            width: 80%;
+            max-width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .loading-progress {
+            position: absolute;
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff4d94, #ff8cb4);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .motorcycle-loader {
+            font-size: 40px;
+            color: #ff4d94;
+            position: absolute;
+            left: 0%;
+            transform: translateX(-100%);
+            transition: left 0.3s ease;
+        }
+
+        .loading-text {
+            color: #fff;
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0.8;
         }
 
         /* Видео фон */
@@ -28,6 +80,8 @@
             height: 100%;
             z-index: 0;
             overflow: hidden;
+            opacity: 0;
+            transition: opacity 1.2s ease-in;
         }
 
         .video-background video {
@@ -56,20 +110,22 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            padding: 20px;
+            min-height: 100vh;
+            padding: 30px 20px;
             text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
         }
 
         .avatar {
-            width: 150px;
-            height: 150px;
+            width: 130px;
+            height: 130px;
             border-radius: 50%;
             border: 3px solid #ff4d94;
             padding: 3px;
-            margin-bottom: 40px;
-            box-shadow: 0 0 25px rgba(255, 77, 148, 0.6);
-            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            margin-bottom: 30px;
+            transition: transform 0.5s ease;
             background: #000;
         }
 
@@ -83,7 +139,6 @@
 
         .avatar:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 35px rgba(255, 77, 148, 0.8);
         }
 
         .avatar:hover img {
@@ -92,23 +147,36 @@
 
         .typewriter {
             background: rgba(0, 0, 0, 0.75);
-            padding: 30px 40px;
-            border-radius: 20px;
-            max-width: 500px;
+            padding: 25px;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
             border: 1px solid #333;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(5px);
+            margin-bottom: 15px;
         }
 
         .typewriter-text {
             color: #fff;
-            font-size: 26px;
-            font-weight: 500;
+            font-size: 18px;
             line-height: 1.6;
-            min-height: 180px;
             text-align: center;
+            min-height: 130px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .typewriter-line {
             overflow: hidden;
             white-space: nowrap;
+            margin: 5px 0;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
         .cursor {
@@ -127,37 +195,105 @@
         }
 
         .motorcycle-icon {
-            margin-top: 30px;
+            margin: 15px 0;
             color: #ff4d94;
-            font-size: 28px;
+            font-size: 24px;
             opacity: 0.9;
             animation: float 3s ease-in-out infinite;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-8px); }
         }
 
         .social {
-            margin-top: 25px;
+            margin-top: 20px;
             display: flex;
-            gap: 20px;
+            gap: 18px;
         }
 
         .social a {
             color: #ff4d94;
-            font-size: 24px;
+            font-size: 22px;
             transition: all 0.3s ease;
         }
 
         .social a:hover {
             color: #fff;
-            transform: translateY(-5px);
+            transform: translateY(-4px);
+        }
+
+        /* Медиа-запросы для адаптивности */
+        @media (min-width: 768px) {
+            .avatar {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .typewriter {
+                padding: 30px;
+                max-width: 450px;
+            }
+            
+            .typewriter-text {
+                font-size: 20px;
+                min-height: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .avatar {
+                width: 110px;
+                height: 110px;
+                margin-bottom: 25px;
+            }
+            
+            .typewriter {
+                padding: 20px 15px;
+            }
+            
+            .typewriter-text {
+                font-size: 16px;
+                min-height: 110px;
+            }
+            
+            .motorcycle-icon {
+                font-size: 22px;
+            }
+            
+            .social a {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-height: 700px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .avatar {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 20px;
+            }
+            
+            .typewriter {
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Прелоадер -->
+    <div id="preloader">
+        <div class="motorcycle-loader">🏍️</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
+        </div>
+        <div class="loading-text">Загрузка...</div>
+    </div>
+
     <!-- Видео фон -->
     <div class="video-background">
         <video autoplay muted loop playsinline>
@@ -187,50 +323,91 @@
         </div>
     </div>
 
-    <!-- Тайпрайтер JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const preloader = document.getElementById('preloader');
+            const videoBackground = document.querySelector('.video-background');
+            const container = document.querySelector('.container');
+            const motorcycleLoader = document.querySelector('.motorcycle-loader');
+            const loadingProgress = document.querySelector('.loading-progress');
             const textElement = document.getElementById('typewriter');
-            const text = "little about me:\nks\n16\nmotorcycles and tiktok";
-            let lineIndex = 0;
-            let charIndex = 0;
-            let currentText = "";
-            let deleting = false;
             
+            // Текст для анимации печати
+            const text = "little about me:\nks\n16\nmotorcycles and tiktok";
             const lines = text.split('\n');
             
-            function type() {
-                if (lineIndex < lines.length) {
-                    if (!deleting && charIndex <= lines[lineIndex].length) {
-                        currentText = lines[lineIndex].substring(0, charIndex);
-                        charIndex++;
-                        setTimeout(type, 100);
-                    } else if (!deleting) {
-                        deleting = true;
-                        setTimeout(type, 1500);
-                        return;
-                    } else if (deleting && charIndex > 0) {
-                        currentText = lines[lineIndex].substring(0, charIndex - 1);
-                        charIndex--;
-                        setTimeout(type, 50);
-                    } else {
-                        deleting = false;
-                        lineIndex++;
-                        if (lineIndex < lines.length) {
-                            currentText += "<br>";
-                        }
-                        setTimeout(type, 500);
-                    }
+            // Симуляция загрузки
+            let progress = 0;
+            const loadingInterval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(loadingInterval);
                     
-                    let fullText = "";
-                    for (let i = 0; i < lineIndex; i++) {
-                        fullText += lines[i] + "<br>";
-                    }
-                    textElement.innerHTML = fullText + currentText + (deleting ? '' : '<span class="cursor"></span>');
+                    // Загрузка завершена
+                    setTimeout(() => {
+                        // Показываем фон и контент
+                        videoBackground.style.opacity = "1";
+                        container.style.opacity = "1";
+                        container.style.transform = "translateY(0)";
+                        
+                        // Скрываем прелоадер
+                        setTimeout(() => {
+                            preloader.style.opacity = "0";
+                            setTimeout(() => {
+                                preloader.style.display = "none";
+                                // Запускаем анимацию печати после загрузки
+                                startTypewriter();
+                            }, 800);
+                        }, 500);
+                    }, 300);
                 }
-            }
+                
+                // Обновляем индикатор загрузки
+                loadingProgress.style.width = progress + '%';
+                motorcycleLoader.style.left = progress + '%';
+            }, 200);
             
-            setTimeout(type, 1000);
+            // Функция анимации печати
+            function startTypewriter() {
+                let lineIndex = 0;
+                let currentLine = '';
+                
+                function typeLine() {
+                    if (lineIndex < lines.length) {
+                        const line = lines[lineIndex];
+                        let charIndex = 0;
+                        
+                        function typeChar() {
+                            if (charIndex < line.length) {
+                                currentLine += line.charAt(charIndex);
+                                updateText();
+                                charIndex++;
+                                setTimeout(typeChar, 100);
+                            } else {
+                                // Переходим к следующей строке
+                                currentLine += '<br>';
+                                updateText();
+                                lineIndex++;
+                                setTimeout(typeLine, 500);
+                            }
+                        }
+                        
+                        typeChar();
+                    }
+                }
+                
+                function updateText() {
+                    let fullText = '';
+                    for (let i = 0; i < lineIndex; i++) {
+                        fullText += lines[i] + '<br>';
+                    }
+                    textElement.innerHTML = fullText + currentLine + '<span class="cursor"></span>';
+                }
+                
+                // Начинаем анимацию
+                setTimeout(typeLine, 500);
+            }
         });
     </script>
 </body>
