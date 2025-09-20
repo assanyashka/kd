@@ -31,7 +31,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease-out;
+            transition: opacity 0.5s ease-out;
         }
 
         .loading-bar-container {
@@ -84,24 +84,14 @@
             z-index: 0;
             overflow: hidden;
             opacity: 0;
-            transition: opacity 1.2s ease-in;
+            transition: opacity 0.8s ease-in;
         }
 
         .video-background video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: brightness(0.7);
-        }
-
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(180, 58, 117, 0.3) 0%, rgba(253, 29, 29, 0.2) 50%, rgba(252, 176, 69, 0.2) 100%);
-            z-index: 1;
+            filter: brightness(0.8);
         }
 
         .container {
@@ -287,7 +277,6 @@
         <video autoplay muted loop playsinline>
             <source src="assets/background.mp4" type="video/mp4">
         </video>
-        <div class="overlay"></div>
     </div>
 
     <div class="container">
@@ -318,35 +307,69 @@
             const motorcycleLoader = document.querySelector('.motorcycle-loader');
             const loadingProgress = document.querySelector('.loading-progress');
             const textElement = document.getElementById('typewriter');
+            const video = document.querySelector('video');
             
-            const text = "little about me:\nks\n16\nmotorcycles and tiktok";
+            const text = "a little bit about me:\nName: ks\nAge: 16 y. o.\nMotorcycle & TikTok ♥️";
             
+            // Проверяем, загружено ли видео
+            let videoLoaded = false;
+            let minLoadingTimePassed = false;
+            
+            // Минимальное время показа прелоадера (миллисекунды)
+            const MIN_LOADING_TIME = 800;
+            
+            // Событие загрузки видео
+            video.addEventListener('loadeddata', function() {
+                videoLoaded = true;
+                checkLoadingComplete();
+            });
+            
+            // Если видео уже загружено (из кэша)
+            if (video.readyState >= 3) {
+                videoLoaded = true;
+            }
+            
+            // Таймер минимального времени загрузки
+            setTimeout(function() {
+                minLoadingTimePassed = true;
+                checkLoadingComplete();
+            }, MIN_LOADING_TIME);
+            
+            function checkLoadingComplete() {
+                if (videoLoaded && minLoadingTimePassed) {
+                    completeLoading();
+                }
+            }
+            
+            // Функция завершения загрузки
+            function completeLoading() {
+                videoBackground.style.opacity = "1";
+                container.style.opacity = "1";
+                container.style.transform = "translateY(0)";
+                
+                setTimeout(() => {
+                    preloader.style.opacity = "0";
+                    setTimeout(() => {
+                        preloader.style.display = "none";
+                        startTypewriter();
+                    }, 500);
+                }, 300);
+            }
+            
+            // Анимация загрузки
             let progress = 0;
             const loadingInterval = setInterval(() => {
-                progress += Math.random() * 10;
+                progress += Math.random() * 12;
                 if (progress >= 100) {
                     progress = 100;
                     clearInterval(loadingInterval);
-                    
-                    setTimeout(() => {
-                        videoBackground.style.opacity = "1";
-                        container.style.opacity = "1";
-                        container.style.transform = "translateY(0)";
-                        
-                        setTimeout(() => {
-                            preloader.style.opacity = "0";
-                            setTimeout(() => {
-                                preloader.style.display = "none";
-                                startTypewriter();
-                            }, 800);
-                        }, 500);
-                    }, 300);
                 }
                 
                 loadingProgress.style.width = progress + '%';
                 motorcycleLoader.style.left = progress + '%';
-            }, 200);
+            }, 150);
             
+            // Функция печатания текста
             function startTypewriter() {
                 let index = 0;
                 const speed = 100;
@@ -362,16 +385,28 @@
                             index++;
                             setTimeout(type, speed);
                         } else {
-                            currentText += '<br>';
+                            if (currentLine < lines.length - 1) {
+                                currentText += '<br>';
+                                textElement.innerHTML = currentText + '<span class="cursor"></span>';
+                            }
                             index = 0;
                             currentLine++;
-                            setTimeout(type, speed * 2);
+                            setTimeout(type, currentLine === lines.length ? 0 : speed * 2);
                         }
+                    } else {
+                        textElement.innerHTML = currentText; // Убираем курсор в конце
                     }
                 }
                 
                 type();
             }
+            
+            // Если видео не загрузилось через 4 секунды, все равно показываем контент
+            setTimeout(function() {
+                if (!videoLoaded || !minLoadingTimePassed) {
+                    completeLoading();
+                }
+            }, 4000);
         });
     </script>
 </body>
