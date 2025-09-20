@@ -377,7 +377,7 @@
                     if (i < fullText.lenght) {
                         const char = fullText[i];
                         if (char === '\n') {
-            textElement.insertBefore(document.createElement('br'), cursor);
+                            textElement.insertBefore(document.createElement('br'), cursor);
                         } else {
                             const textNode = document.createTextNode(char);
                             textElement.insertBefore(textNode, cursor);
