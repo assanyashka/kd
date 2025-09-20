@@ -365,20 +365,28 @@
             function startTypewriter() {
                 const fullText = text;
                 let i = 0;
-                let speed = 100;
-                
+                const speed = 100;
+
+                const cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                textElement.innerHTML = ''; // очищаем блок
+                textElement.appendChild(cursor);
+
                 function typeWriter() {
-                    if (i <= fullText.length) {
-                        let displayText = fullText.substring(0, i);
-                        displayText = displayText.replace(/\n/g, '<br>');
-                        
-                        textElement.innerHTML = displayText + '<span class="cursor"></span>';
-                        i++;
-                        setTimeout(typeWriter, speed);
-                    }
-                }
-                
-                typeWriter();
+                    if (i < fullText.length) {
+                        const char = fullText[i];
+                        if (char === '\n') {
+            textElement.insertBefore(document.createElement('br'), cursor);
+            } else {
+                const textNode = document.createTextNode(char);
+                textElement.insertBefore(textNode, cursor);
+            }
+            i++;
+            setTimeout(typeWriter, char === '\n' ? speed * 2 : speed);
+        }
+    }
+
+                 typeWriter();
             }
             
             setTimeout(function() {
