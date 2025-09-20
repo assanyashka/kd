@@ -153,19 +153,19 @@
             text-align: center;
             min-height: 130px;
             display: block;
-            flex-direction: column;
             justify-content: center;
             font-family: Consolas, monospace;
             white-space: pre-wrap;
+            vertical-align: middle;
         }
 
         .cursor {
-           display: inline;
-           width: 3px;
+           display: inline-block;
+           width: 2px;
            height: 1em;
            background-color: #ff4d94;
            vertical-align: bottom;
-           animation: blink 1s infinite;
+           animation: blink 1s step-start infinite;
         }
 
         @keyframes blink {
