@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KS | Мотоциклистка</title>
+    <title>Ks | info ❤️</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -364,21 +364,18 @@
             }, 150);
             
             function startTypewriter() {
-                let i = 0;
-                const speed = 100;
                 const fullText = text;
+                let i = 0;
+                let speed = 100;
                 
                 function typeWriter() {
-                    if (i < fullText.length) {
-                        const currentChar = fullText.charAt(i);
-                        const isNewLine = currentChar === '\n';
+                    if (i <= fullText.length) {
+                        let displayText = fullText.substring(0, i);
+                        displayText = displayText.replace(/\n/g, '<br>');
                         
-                        textElement.innerHTML = fullText.substring(0, i + 1) + (isNewLine ? '' : '<span class="cursor"></span>');
-                        
+                        textElement.innerHTML = displayText + '<span class="cursor"></span>';
                         i++;
-                        setTimeout(typeWriter, isNewLine ? speed * 2 : speed);
-                    } else {
-                        textElement.innerHTML = fullText;
+                        setTimeout(typeWriter, speed);
                     }
                 }
                 
