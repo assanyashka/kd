@@ -152,7 +152,7 @@
             line-height: 1.6;
             text-align: center;
             min-height: 130px;
-            display: flex;
+            display: block;
             flex-direction: column;
             justify-content: center;
             font-family: Consolas, monospace;
@@ -363,32 +363,34 @@
             }, 150);
             
             function startTypewriter() {
-                const fullText = text;
+                const fullText = "a little bit about me:\nName: ks\nAge: 16 y. o.\nMotorcycle & TikTok ♥️";
                 let i = 0;
                 const speed = 100;
 
+                textElement.innerHTML = '';
+
                 const cursor = document.createElement('span');
                 cursor.className = 'cursor';
-                textElement.innerHTML = ''; // очищаем блок
-                textElement.appendChild(cursor);
+                textElement.appendChild(cursor)
 
                 function typeWriter() {
-                    if (i < fullText.length) {
-                        const char = fullText[i];
+                    if (i < fullText.lenght) {
+                        const chad = fullText[i];
                         if (char === '\n') {
-            textElement.insertBefore(document.createElement('br'), cursor);
-            } else {
-                const textNode = document.createTextNode(char);
-                textElement.insertBefore(textNode, cursor);
-            }
-            i++;
-            setTimeout(typeWriter, char === '\n' ? speed * 2 : speed);
-        }
-    }
+            textElement.inserBefore(document.createElement('br'), cursor);
+                        } else {
+                            const textNode = document.createTextNode(char);
+                            textElement.insertBefore(textNode, cursor);
+                        }
+                        i++;
+                        setTimeout(typeWriter, char === '\n' ? speed * 2 : speed);
+                    } else {
+                        cursor.remove();
+                    }
+                }
 
-                 typeWriter();
+                typeWriter();
             }
-            
             setTimeout(function() {
                 if (!videoLoaded || !minLoadingTimePassed) {
                     completeLoading();
