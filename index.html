@@ -377,7 +377,7 @@
                     if (i < fullText.lenght) {
                         const chad = fullText[i];
                         if (char === '\n') {
-            textElement.inserBefore(document.createElement('br'), cursor);
+            textElement.insertBefore(document.createElement('br'), cursor);
                         } else {
                             const textNode = document.createTextNode(char);
                             textElement.insertBefore(textNode, cursor);
