@@ -159,17 +159,18 @@
         }
 
         .cursor {
-           display: inline-block;
-           width: 2px;
-           height: 1em;
-           background-color: #ff4d94;
-           vertical-align: bottom;
-           animation: blink 1s step-start infinite;
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #ff4d94;
+            position: relative;
+            top: 0;
+            animation: blink 1s step-start infinite;
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
         }
 
         .motorcycle-icon {
