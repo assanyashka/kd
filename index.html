@@ -64,7 +64,7 @@
             left: 0%;
             font-size: 30px;
             color: #ff4d94;
-            transform: translateX(-50%);
+            transform: translateX(-50%) scaleX(-1);
             transition: left 0.3s ease;
         }
 
@@ -156,6 +156,7 @@
             flex-direction: column;
             justify-content: center;
             font-family: Consolas, monospace;
+            white-space: pre-wrap;
         }
 
         .cursor {
@@ -163,9 +164,9 @@
             width: 3px;
             height: 1em;
             background-color: #ff4d94;
-            margin-left: 4px;
             animation: blink 1s infinite;
             vertical-align: middle;
+            margin-left: 2px;
         }
 
         @keyframes blink {
@@ -311,25 +312,20 @@
             
             const text = "a little bit about me:\nName: ks\nAge: 16 y. o.\nMotorcycle & TikTok ♥️";
             
-            // Проверяем, загружено ли видео
             let videoLoaded = false;
             let minLoadingTimePassed = false;
             
-            // Минимальное время показа прелоадера (миллисекунды)
             const MIN_LOADING_TIME = 800;
             
-            // Событие загрузки видео
             video.addEventListener('loadeddata', function() {
                 videoLoaded = true;
                 checkLoadingComplete();
             });
             
-            // Если видео уже загружено (из кэша)
             if (video.readyState >= 3) {
                 videoLoaded = true;
             }
             
-            // Таймер минимального времени загрузки
             setTimeout(function() {
                 minLoadingTimePassed = true;
                 checkLoadingComplete();
@@ -341,7 +337,6 @@
                 }
             }
             
-            // Функция завершения загрузки
             function completeLoading() {
                 videoBackground.style.opacity = "1";
                 container.style.opacity = "1";
@@ -356,7 +351,6 @@
                 }, 300);
             }
             
-            // Анимация загрузки
             let progress = 0;
             const loadingInterval = setInterval(() => {
                 progress += Math.random() * 12;
@@ -369,39 +363,28 @@
                 motorcycleLoader.style.left = progress + '%';
             }, 150);
             
-            // Функция печатания текста
             function startTypewriter() {
-                let index = 0;
+                let i = 0;
                 const speed = 100;
-                const lines = text.split('\n');
-                let currentLine = 0;
-                let currentText = '';
+                const fullText = text;
                 
-                function type() {
-                    if (currentLine < lines.length) {
-                        if (index < lines[currentLine].length) {
-                            currentText += lines[currentLine].charAt(index);
-                            textElement.innerHTML = currentText + '<span class="cursor"></span>';
-                            index++;
-                            setTimeout(type, speed);
-                        } else {
-                            if (currentLine < lines.length - 1) {
-                                currentText += '<br>';
-                                textElement.innerHTML = currentText + '<span class="cursor"></span>';
-                            }
-                            index = 0;
-                            currentLine++;
-                            setTimeout(type, currentLine === lines.length ? 0 : speed * 2);
-                        }
+                function typeWriter() {
+                    if (i < fullText.length) {
+                        const currentChar = fullText.charAt(i);
+                        const isNewLine = currentChar === '\n';
+                        
+                        textElement.innerHTML = fullText.substring(0, i + 1) + (isNewLine ? '' : '<span class="cursor"></span>');
+                        
+                        i++;
+                        setTimeout(typeWriter, isNewLine ? speed * 2 : speed);
                     } else {
-                        textElement.innerHTML = currentText; // Убираем курсор в конце
+                        textElement.innerHTML = fullText;
                     }
                 }
                 
-                type();
+                typeWriter();
             }
             
-            // Если видео не загрузилось через 4 секунды, все равно показываем контент
             setTimeout(function() {
                 if (!videoLoaded || !minLoadingTimePassed) {
                     completeLoading();
