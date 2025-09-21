@@ -109,6 +109,10 @@
             transition: opacity 1s ease, transform 1s ease;
         }
 
+        .counter {
+            margin-bottom: 20px;
+        }
+
         .avatar {
             width: 130px;
             height: 130px;
@@ -186,21 +190,10 @@
             50% { transform: translateY(-8px); }
         }
 
-        .social {
+        .footer {
+            color: #888;
+            font-size: 12px;
             margin-top: 20px;
-            display: flex;
-            gap: 18px;
-        }
-
-        .social a {
-            color: #ff4d94;
-            font-size: 22px;
-            transition: all 0.3s ease;
-        }
-
-        .social a:hover {
-            color: #fff;
-            transform: translateY(-4px);
         }
 
         @media (min-width: 768px) {
@@ -239,10 +232,6 @@
             .motorcycle-icon {
                 font-size: 22px;
             }
-            
-            .social a {
-                font-size: 20px;
-            }
         }
 
         @media (max-height: 700px) {
@@ -280,6 +269,10 @@
     </div>
 
     <div class="container">
+        <div class="counter">
+            <img src="https://count.getloli.com/@ks?name=ks&theme=asoul&padding=7&offset=0&align=top&scale=1&pixelated=1&darkmode=auto" alt="Счетчик посещений">
+        </div>
+        
         <div class="avatar">
             <img src="https://t.me/i/userpic/160/ksellik.jpg" alt="KS Avatar">
         </div>
@@ -288,15 +281,11 @@
             <div class="typewriter-text" id="typewriter"></div>
         </div>
 
-        <div class="motorcycle-icon">
+        <a href="https://t.me/ksellik" class="motorcycle-icon">
             <i class="fas fa-motorcycle"></i>
-        </div>
+        </a>
 
-        <div class="social">
-            <a href="#" title="TikTok"><i class="fab fa-tiktok"></i></a>
-            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="#" title="Telegram"><i class="fab fa-telegram"></i></a>
-        </div>
+        <div class="footer">© codermasochist. All right reserved.</div>
     </div>
 
     <script>
